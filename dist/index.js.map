@@ -1,0 +1,1 @@
+{"version":3,"sources":["../src/index.ts"],"sourcesContent":["function add(num1: number, num2: number): number {\n  return num1 + num2;\n}\nexport default add;\n"],"mappings":";;;;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,SAAS,IAAI,MAAc,MAAsB;AAC/C,SAAO,OAAO;AAChB;AACA,IAAO,cAAQ;","names":[]}
