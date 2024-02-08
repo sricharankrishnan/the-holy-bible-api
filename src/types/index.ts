@@ -1,14 +1,14 @@
 /* app imports */
-import { RandomVerseProps, RandomVerseReturn } from "./random-verse";
+import { RandomVerseProps, RandomVerse } from "./random-verse";
 
 export interface FetchRandomVerseReturn {
   code: string;
   message: string;
-  payload: RandomVerseReturn | string;
+  payload: RandomVerse | string;
 }
 
 export interface HolyBibleInt {
   baseUrl: string;
-  fetchRandomVerse: (props?: RandomVerseProps) => Promise<FetchRandomVerseReturn>;
+  fetchRandomVerse: (props: RandomVerseProps) => Promise<FetchRandomVerseReturn>;
 }
 

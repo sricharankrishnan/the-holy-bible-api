@@ -1,4 +1,4 @@
-export interface RandomVerseReturn {
+export interface RandomVerse {
   book: {
     id: string;
     name: string;
@@ -13,6 +13,6 @@ export interface RandomVerseReturn {
   }
 }
 
-export type RandomVerseProps = undefined | {
-  langId: string;
-};
+export interface RandomVerseProps {
+  langId?: string;
+}
