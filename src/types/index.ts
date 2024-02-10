@@ -27,10 +27,21 @@ export interface FetchChapterVerseByRangeReturn {
   payload: VersesByRange | string;
 }
 
+export interface MultiRangeProp {
+  chapter: number;
+  verses: string[];
+}
+
+export interface FetchChapterVerseByMultiRangeProps {
+  name: string;
+  range: MultiRangeProp[];
+}
+
 export interface HolyBibleInt {
   baseUrl: string;
   fetchRandomVerse: (props: RandomVerseProps) => Promise<FetchRandomVerseReturn>;
   fetchASingleVerse: (props: FetchSingleVerseProps) => Promise<SingleVerse>;
   fetchChapterVersesByRange: (props: FetchChapterVerseByRangeProps) => Promise<FetchChapterVerseByRangeReturn>;
+  fetchChapterVersesByMultiRange: (props: FetchChapterVerseByMultiRangeProps) =>  Promise<FetchChapterVerseByRangeReturn>;
 }
 

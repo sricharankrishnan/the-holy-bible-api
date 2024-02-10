@@ -4,7 +4,9 @@ import {
   FetchRandomVerseReturn,
   FetchSingleVerseProps,
   FetchChapterVerseByRangeProps,
-  FetchChapterVerseByRangeReturn
+  FetchChapterVerseByRangeReturn,
+  MultiRangeProp,
+  FetchChapterVerseByMultiRangeProps
 } from "./types";
 import { RandomVerseProps } from "./types/random-verse";
 import { SingleVerse } from "./types/verse";
@@ -19,6 +21,36 @@ class HolyBible implements HolyBibleInt {
   /* @constructor */
   constructor() {
     this.baseUrl = "https://bible-api.com/";
+  };
+
+  /**
+   * @props:
+   * - name: string - name of the book
+   * - range: Array<{chapter: number, verses: string[]}>: chapter number with the verse ranges
+   */
+  async fetchChapterVersesByMultiRange(props: FetchChapterVerseByMultiRangeProps): Promise<FetchChapterVerseByRangeReturn> {
+    const $this = this;
+    const { name, range } = props;
+
+    /* composed the request url based on the received params */
+    const requestUrl = range.reduce((composed, data: MultiRangeProp, index) => {
+      /* extract */
+      const { chapter, verses } = data;
+
+      /* create the join */
+      const versesJoin = verses.join(",");
+      const chapVerJoined = (index === range.length - 1) ? `${chapter}:${versesJoin}` : `${chapter}:${versesJoin},`;
+
+      /* compose */
+      composed = `${composed}${chapVerJoined}`;
+      return composed;
+    }, `${$this.baseUrl}${name}+`);
+
+    /* fetch */
+    const data = await fetchVersesByRange(requestUrl);
+
+    /* return to client */
+    return data;
   };
 
   /**
@@ -62,7 +94,7 @@ class HolyBible implements HolyBibleInt {
 
   /**
    * gets a random verse through the api
-   * @arg: RandomVerseProps
+   * arg: {langId?: string;}
    */
   async fetchRandomVerse(props: RandomVerseProps): Promise<FetchRandomVerseReturn> {
     const $this = this;
