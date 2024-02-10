@@ -2,11 +2,11 @@
 import axios, { AxiosResponse } from "axios";
 
 /* app imports */
-import { FetchRandomVerseReturn } from "../../types";
+import { RandomVerseReturn } from "../../types";
 
 /* interface */
 type ModuleProps = {requestUrl: string};
-type ModuleReturns = Promise<FetchRandomVerseReturn>;
+type ModuleReturns = Promise<RandomVerseReturn>;
 
 /* module */
 function fetchRandomVerse(props: ModuleProps): ModuleReturns {

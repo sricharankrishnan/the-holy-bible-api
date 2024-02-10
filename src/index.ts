@@ -1,12 +1,11 @@
 /* app imports */
 import {
   HolyBibleInt,
-  FetchRandomVerseReturn,
-  FetchSingleVerseProps,
-  FetchChapterVerseByRangeProps,
-  FetchChapterVerseByRangeReturn,
-  MultiRangeProp,
-  FetchChapterVerseByMultiRangeProps
+  RandomVerseReturn,
+  SingleVerseProps,
+  VerseByRangeProps,
+  VerseByRangeReturn,
+  VerseByMultiRangeProps
 } from "./types";
 import { RandomVerseProps } from "./types/random-verse";
 import { SingleVerse } from "./types/verse";
@@ -28,12 +27,12 @@ class HolyBible implements HolyBibleInt {
    * - name: string - name of the book
    * - range: Array<{chapter: number, verses: string[]}>: chapter number with the verse ranges
    */
-  async fetchChapterVersesByMultiRange(props: FetchChapterVerseByMultiRangeProps): Promise<FetchChapterVerseByRangeReturn> {
+  async fetchChapterVersesByMultiRange(props: VerseByMultiRangeProps): Promise<VerseByRangeReturn> {
     const $this = this;
     const { name, range } = props;
 
     /* composed the request url based on the received params */
-    const requestUrl = range.reduce((composed, data: MultiRangeProp, index) => {
+    const requestUrl = range.reduce((composed, data, index) => {
       /* extract */
       const { chapter, verses } = data;
 
@@ -60,7 +59,7 @@ class HolyBible implements HolyBibleInt {
    * - start: number - staring verse number
    * - end: number - ending verse number
    */
-  async fetchChapterVersesByRange(props: FetchChapterVerseByRangeProps): Promise<FetchChapterVerseByRangeReturn> {
+  async fetchChapterVersesByRange(props: VerseByRangeProps): Promise<VerseByRangeReturn> {
     const $this = this;
     const { name, chapter, start, end } = props;
 
@@ -82,7 +81,7 @@ class HolyBible implements HolyBibleInt {
    * - chapter: number - chapter number
    * - verse: number - verse number
    */
-  async fetchASingleVerse(props: FetchSingleVerseProps): Promise<SingleVerse> {
+  async fetchASingleVerse(props: SingleVerseProps): Promise<SingleVerse> {
     const $this = this;
     const { name, chapter, verse } = props;
     const requestUrl = `${this.baseUrl}${name}+${chapter}:${verse}`;
@@ -93,10 +92,10 @@ class HolyBible implements HolyBibleInt {
   }
 
   /**
-   * gets a random verse through the api
-   * arg: {langId?: string;}
+   * @props:
+   * {langId?: string;}
    */
-  async fetchRandomVerse(props: RandomVerseProps): Promise<FetchRandomVerseReturn> {
+  async fetchRandomVerse(props: RandomVerseProps): Promise<RandomVerseReturn> {
     const $this = this;
     const { langId } = props;
     const translation = !langId ? "web" : langId;

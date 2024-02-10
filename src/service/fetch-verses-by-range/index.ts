@@ -2,11 +2,11 @@
 import axios, { AxiosResponse } from "axios";
 
 /* app imports */
-import { FetchChapterVerseByRangeReturn } from "../../types/index";
+import { VerseByRangeReturn } from "../../types/index";
 import { Verse } from "../../types/verse";
 
 /* module */
-function fetchChapterVersesByRange(requestUrl: string): Promise<FetchChapterVerseByRangeReturn> {
+function fetchChapterVersesByRange(requestUrl: string): Promise<VerseByRangeReturn> {
   return new Promise((resolve, reject) => {
     axios.get(requestUrl)
       .then((response: AxiosResponse) => {
