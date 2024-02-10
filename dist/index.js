@@ -95,11 +95,63 @@ function fetchRandomVerse(props) {
 }
 var random_verse_default = fetchRandomVerse;
 
+// src/service/fetch-single-verse/index.ts
+var import_axios2 = __toESM(require("axios"));
+function fetchASingleVerse(requestUrl) {
+  return new Promise((resolve, reject) => {
+    import_axios2.default.get(requestUrl).then((response) => {
+      if (response.statusText.toLowerCase() === "ok" || response.status === 200) {
+        const { data } = response;
+        const verse = {
+          book: {
+            id: data.verses[0].book_id,
+            name: data.verses[0].book_name
+          },
+          chapter: data.verses[0].chapter,
+          verse: data.verses[0].verse,
+          text: data.verses[0].text,
+          translation: {
+            id: data.translation_id,
+            name: data.translation_name,
+            note: data.translation_note
+          }
+        };
+        resolve(verse);
+      } else {
+        throw new Error("Sorry. Fetching A Single Verse: - something went wrong");
+        return;
+      }
+    }).catch((error) => {
+      reject({
+        code: "api-fail",
+        message: "Something went wrong",
+        payload: error
+      });
+    });
+  });
+}
+var fetch_single_verse_default = fetchASingleVerse;
+
 // src/index.ts
 var HolyBible = class {
   /* @constructor */
   constructor() {
     this.baseUrl = "https://bible-api.com/";
+  }
+  /**
+   * @props:
+   * - @name: string - name of the book
+   * - @chapter: number - chapter number
+   * - @verse: number - verse number
+   */
+  fetchASingleVerse(props) {
+    return __async(this, null, function* () {
+      const $this = this;
+      const { name, chapter, verse } = props;
+      const requestUrl = `${this.baseUrl}${name}+${chapter}:${verse}`;
+      const data = yield fetch_single_verse_default(requestUrl);
+      return data;
+    });
   }
   /**
    * gets a random verse through the api
