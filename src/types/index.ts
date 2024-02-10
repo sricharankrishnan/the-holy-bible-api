@@ -1,7 +1,6 @@
 /* app imports */
 import { RandomVerseProps, RandomVerse } from "./random-verse";
-import { Verse } from "./verse";
-import { Translation } from "./translation";
+import { SingleVerse, VersesByRange } from "./verse";
 
 export interface FetchRandomVerseReturn {
   code: string;
@@ -15,13 +14,23 @@ export interface FetchSingleVerseProps {
   verse: number;
 }
 
-export interface SingleVerse extends Verse {
-  translation: Translation;
+export interface FetchChapterVerseByRangeProps {
+  name: string;
+  chapter: number;
+  start: number;
+  end: number;
+}
+
+export interface FetchChapterVerseByRangeReturn {
+  code: string;
+  message: string;
+  payload: VersesByRange | string;
 }
 
 export interface HolyBibleInt {
   baseUrl: string;
   fetchRandomVerse: (props: RandomVerseProps) => Promise<FetchRandomVerseReturn>;
   fetchASingleVerse: (props: FetchSingleVerseProps) => Promise<SingleVerse>;
+  fetchChapterVersesByRange: (props: FetchChapterVerseByRangeProps) => Promise<FetchChapterVerseByRangeReturn>;
 }
 

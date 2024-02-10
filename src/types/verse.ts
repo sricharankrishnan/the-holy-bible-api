@@ -7,3 +7,12 @@ export interface Verse {
   verse: number;
   text: string;
 }
+
+export interface SingleVerse extends Verse {
+  translation: Translation;
+}
+
+export interface VersesByRange {
+  verses: Verse[];
+  translation: Translation;
+}

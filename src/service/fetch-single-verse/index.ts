@@ -2,7 +2,7 @@
 import axios, { AxiosResponse } from "axios";
 
 /* app imports */
-import { SingleVerse } from "../../types/index";
+import { SingleVerse } from "../../types/verse";
 
 /* module */
 function fetchASingleVerse(requestUrl: string): Promise<SingleVerse> {

@@ -1,9 +1,16 @@
 /* app imports */
-import { HolyBibleInt, FetchRandomVerseReturn, FetchSingleVerseProps } from "./types";
+import {
+  HolyBibleInt,
+  FetchRandomVerseReturn,
+  FetchSingleVerseProps,
+  FetchChapterVerseByRangeProps,
+  FetchChapterVerseByRangeReturn
+} from "./types";
 import { RandomVerseProps } from "./types/random-verse";
-import { SingleVerse } from "./types/index";
+import { SingleVerse } from "./types/verse";
 import randomVerseHandler from "./service/random-verse/index";
 import fetchASingleVerse from "./service/fetch-single-verse/index";
+import fetchVersesByRange from "./service/fetch-verses-by-range/index";
 
 /* class */
 class HolyBible implements HolyBibleInt {
@@ -16,9 +23,32 @@ class HolyBible implements HolyBibleInt {
 
   /**
    * @props:
-   * - @name: string - name of the book
-   * - @chapter: number - chapter number
-   * - @verse: number - verse number
+   * - name: string - name of the book
+   * - chapter: number - chapter number
+   * - start: number - staring verse number
+   * - end: number - ending verse number
+   */
+  async fetchChapterVersesByRange(props: FetchChapterVerseByRangeProps): Promise<FetchChapterVerseByRangeReturn> {
+    const $this = this;
+    const { name, chapter, start, end } = props;
+
+    if (end < start) {
+      return {
+        code: "api-fail",
+        message: "Something has gone wrong",
+        payload: "The 'end' value cannot be less than the 'start' value"
+      };
+    }
+    const requestUrl = `${this.baseUrl}${name}+${chapter}:${start}-${end}`;
+    const data = await fetchVersesByRange(requestUrl);
+    return data;
+  }
+
+  /**
+   * @props:
+   * - name: string - name of the book
+   * - chapter: number - chapter number
+   * - verse: number - verse number
    */
   async fetchASingleVerse(props: FetchSingleVerseProps): Promise<SingleVerse> {
     const $this = this;
