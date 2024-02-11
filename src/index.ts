@@ -31,10 +31,10 @@ class HolyBible implements HolyBibleInt {
    */
   async fetchChapterVersesByMultiRange(props: VerseByMultiRangeProps): Promise<VerseByRangeReturn | unknown> {
     const $this = this;
-    const { name, range } = props;
+    const { name, range, langId } = props;
 
     /* composed the request url based on the received params */
-    const requestUrl = range.reduce((composed, data, index) => {
+    let requestUrl = range.reduce((composed, data, index) => {
       /* extract */
       const { chapter, verses } = data;
 
@@ -46,6 +46,9 @@ class HolyBible implements HolyBibleInt {
       composed = `${composed}${chapVerJoined}`;
       return composed;
     }, `${$this.baseUrl}${name}+`);
+
+    /* add the translation */
+    requestUrl = !langId ? `${requestUrl}?translation=web` : `${requestUrl}?translation=${langId}`;
 
     /* fetch and return to client */
     try {
@@ -64,17 +67,20 @@ class HolyBible implements HolyBibleInt {
    * - end: number - ending verse number
    */
   async fetchChapterVersesByRange(props: VerseByRangeProps): Promise<VerseByRangeReturn | unknown> {
-    const $this = this;
-    const { name, chapter, start, end } = props;
-
-    if (end < start) {
+    /* not ok... */
+    if (props.end < props.start) {
       return {
         code: "api-fail",
         message: "Something has gone wrong",
         payload: "The 'end' value cannot be less than the 'start' value"
       };
     }
-    const requestUrl = `${this.baseUrl}${name}+${chapter}:${start}-${end}`;
+
+    /* ok... */
+    const $this = this;
+    const { name, chapter, start, end, langId } = props;
+    const translation = !langId ? "web" : langId;
+    const requestUrl = `${this.baseUrl}${name}+${chapter}:${start}-${end}?translation=${translation}`;
 
     /* fetch and return to client */
     try {
@@ -93,8 +99,9 @@ class HolyBible implements HolyBibleInt {
    */
   async fetchASingleVerse(props: SingleVerseProps): Promise<SingleVerseReturn | unknown> {
     const $this = this;
-    const { name, chapter, verse } = props;
-    const requestUrl = `${this.baseUrl}${name}+${chapter}:${verse}`;
+    const { name, chapter, verse, langId } = props;
+    const translation = !langId ? "web" : langId;
+    const requestUrl = `${this.baseUrl}${name}+${chapter}:${verse}?translation=${translation}`;
 
     /* fetch and return to client */
     try {

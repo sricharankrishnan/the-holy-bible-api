@@ -12,6 +12,7 @@ export interface SingleVerseProps {
   name: string;
   chapter: number;
   verse: number;
+  langId?: string;
 }
 
 export interface SingleVerseReturn {
@@ -25,6 +26,7 @@ export interface VerseByRangeProps {
   chapter: number;
   start: number;
   end: number;
+  langId?: string;
 }
 
 export interface VerseByRangeReturn {
@@ -36,6 +38,7 @@ export interface VerseByRangeReturn {
 export interface VerseByMultiRangeProps {
   name: string;
   range: {chapter: number, verses: string[]}[];
+  langId?: string;
 }
 
 export interface HolyBibleInt {
