@@ -3,9 +3,10 @@ import axios, { AxiosResponse } from "axios";
 
 /* app imports */
 import { SingleVerse } from "../../types/verse";
+import { SingleVerseReturn } from "../../types/index";
 
 /* module */
-function fetchASingleVerse(requestUrl: string): Promise<SingleVerse> {
+function fetchASingleVerse(requestUrl: string): Promise<SingleVerseReturn> {
   return new Promise((resolve, reject) => {
     axios.get(requestUrl)
       .then((response: AxiosResponse) => {
@@ -30,7 +31,11 @@ function fetchASingleVerse(requestUrl: string): Promise<SingleVerse> {
           };
 
           /* return to client */
-          resolve(verse);
+          resolve({
+            code: "api-ok",
+            message: "API Success: Fetch Single Verse",
+            payload: verse
+          });
         }
         else {
           throw new Error("Sorry. Fetching A Single Verse: - something went wrong");
@@ -38,11 +43,27 @@ function fetchASingleVerse(requestUrl: string): Promise<SingleVerse> {
         }
       })
       .catch((error) => {
-        reject({
-          code: "api-fail",
-          message: "Something went wrong",
-          payload: error
-        });
+        if (error.response) {
+          reject({
+            code: "api-fail",
+            message: "The request was made and the server responded with a status code",
+            payload: error.response
+          });
+        }
+        else if (error.request) {
+          reject({
+            code: "api-fail",
+            message: "The request was made but no response was received",
+            payload: error.request
+          });
+        }
+        else {
+          reject({
+            code: "api-fail",
+            message: "Something happened in setting up the request that triggered an Error",
+            payload: error.message
+          });
+        }
       });
   });
 }

@@ -3,6 +3,7 @@ import {
   HolyBibleInt,
   RandomVerseReturn,
   SingleVerseProps,
+  SingleVerseReturn,
   VerseByRangeProps,
   VerseByRangeReturn,
   VerseByMultiRangeProps
@@ -27,7 +28,7 @@ class HolyBible implements HolyBibleInt {
    * - name: string - name of the book
    * - range: Array<{chapter: number, verses: string[]}>: chapter number with the verse ranges
    */
-  async fetchChapterVersesByMultiRange(props: VerseByMultiRangeProps): Promise<VerseByRangeReturn> {
+  async fetchChapterVersesByMultiRange(props: VerseByMultiRangeProps): Promise<VerseByRangeReturn | unknown> {
     const $this = this;
     const { name, range } = props;
 
@@ -45,11 +46,13 @@ class HolyBible implements HolyBibleInt {
       return composed;
     }, `${$this.baseUrl}${name}+`);
 
-    /* fetch */
-    const data = await fetchVersesByRange(requestUrl);
-
-    /* return to client */
-    return data;
+    /* fetch and return to client */
+    try {
+      const data = await fetchVersesByRange(requestUrl);
+      return data;
+    } catch(error) {
+      return error;
+    }
   };
 
   /**
@@ -59,7 +62,7 @@ class HolyBible implements HolyBibleInt {
    * - start: number - staring verse number
    * - end: number - ending verse number
    */
-  async fetchChapterVersesByRange(props: VerseByRangeProps): Promise<VerseByRangeReturn> {
+  async fetchChapterVersesByRange(props: VerseByRangeProps): Promise<VerseByRangeReturn | unknown> {
     const $this = this;
     const { name, chapter, start, end } = props;
 
@@ -71,8 +74,14 @@ class HolyBible implements HolyBibleInt {
       };
     }
     const requestUrl = `${this.baseUrl}${name}+${chapter}:${start}-${end}`;
-    const data = await fetchVersesByRange(requestUrl);
-    return data;
+
+    /* fetch and return to client */
+    try {
+      const data = await fetchVersesByRange(requestUrl);
+      return data;
+    } catch (error) {
+      return error;
+    }
   }
 
   /**
@@ -81,29 +90,37 @@ class HolyBible implements HolyBibleInt {
    * - chapter: number - chapter number
    * - verse: number - verse number
    */
-  async fetchASingleVerse(props: SingleVerseProps): Promise<SingleVerse> {
+  async fetchASingleVerse(props: SingleVerseProps): Promise<SingleVerseReturn | unknown> {
     const $this = this;
     const { name, chapter, verse } = props;
     const requestUrl = `${this.baseUrl}${name}+${chapter}:${verse}`;
 
     /* fetch and return to client */
-    const data = await fetchASingleVerse(requestUrl);
-    return data;
+    try {
+      const data = await fetchASingleVerse(requestUrl);
+      return data;
+    } catch (error) {
+      return error;
+    }
   }
 
   /**
    * @props:
    * {langId?: string;}
    */
-  async fetchRandomVerse(props: RandomVerseProps): Promise<RandomVerseReturn> {
+  async fetchRandomVerse(props: RandomVerseProps): Promise<RandomVerseReturn | unknown> {
     const $this = this;
     const { langId } = props;
     const translation = !langId ? "web" : langId;
     const requestUrl = `${$this.baseUrl}?random=verse&translation=${translation}`;
 
     /* fetch and return to client */
-    const data = await randomVerseHandler({requestUrl});
-    return data;
+    try {
+      const data = await randomVerseHandler({requestUrl});
+      return data;
+    } catch (error) {
+      return error;
+    }
   }
 }
 

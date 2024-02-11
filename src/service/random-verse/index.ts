@@ -45,11 +45,27 @@ function fetchRandomVerse(props: ModuleProps): ModuleReturns {
       });
     })
     .catch((error) => {
-      reject({
-        code: "api-fail",
-        message: "Something went wrong",
-        payload: error
-      });
+      if (error.response) {
+        reject({
+          code: "api-fail",
+          message: "The request was made and the server responded with a status code",
+          payload: error.response
+        });
+      }
+      else if (error.request) {
+        reject({
+          code: "api-fail",
+          message: "The request was made but no response was received",
+          payload: error.request
+        });
+      }
+      else {
+        reject({
+          code: "api-fail",
+          message: "Something happened in setting up the request that triggered an Error",
+          payload: error.message
+        });
+      }
     });
   });
 }

@@ -39,7 +39,7 @@ function fetchChapterVersesByRange(requestUrl: string): Promise<VerseByRangeRetu
           /* return to client */
           resolve({
             code: "api-ok",
-            message: "Api Success - Fetch Chapter Verses By Range",
+            message: "API Success - Fetch Chapter Verses By Range",
             payload: {
               verses,
               translation
@@ -52,11 +52,27 @@ function fetchChapterVersesByRange(requestUrl: string): Promise<VerseByRangeRetu
         }
       })
       .catch((error) => {
-        reject({
-          code: "api-fail",
-          message: "Something went wrong",
-          payload: error
-        });
+        if (error.response) {
+          reject({
+            code: "api-fail",
+            message: "The request was made and the server responded with a status code",
+            payload: error.response
+          });
+        }
+        else if (error.request) {
+          reject({
+            code: "api-fail",
+            message: "The request was made but no response was received",
+            payload: error.request
+          });
+        }
+        else {
+          reject({
+            code: "api-fail",
+            message: "Something happened in setting up the request that triggered an Error",
+            payload: error.message
+          });
+        }
       });
   });
 }

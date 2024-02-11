@@ -5,13 +5,19 @@ import { SingleVerse, VersesByRange } from "./verse";
 export interface RandomVerseReturn {
   code: string;
   message: string;
-  payload: RandomVerse | string;
+  payload: RandomVerse | Record<string, any>;
 }
 
 export interface SingleVerseProps {
   name: string;
   chapter: number;
   verse: number;
+}
+
+export interface SingleVerseReturn {
+  code: string;
+  message: string;
+  payload: SingleVerse | Record<string, any>;
 }
 
 export interface VerseByRangeProps {
@@ -24,7 +30,7 @@ export interface VerseByRangeProps {
 export interface VerseByRangeReturn {
   code: string;
   message: string;
-  payload: VersesByRange | string;
+  payload: VersesByRange | Record<string, any>;
 }
 
 export interface VerseByMultiRangeProps {
@@ -34,9 +40,8 @@ export interface VerseByMultiRangeProps {
 
 export interface HolyBibleInt {
   baseUrl: string;
-  fetchRandomVerse: (props: RandomVerseProps) => Promise<RandomVerseReturn>;
-  fetchASingleVerse: (props: SingleVerseProps) => Promise<SingleVerse>;
-  fetchChapterVersesByRange: (props: VerseByRangeProps) => Promise<VerseByRangeReturn>;
-  fetchChapterVersesByMultiRange: (props: VerseByMultiRangeProps) =>  Promise<VerseByRangeReturn>;
+  fetchRandomVerse: (props: RandomVerseProps) => Promise<RandomVerseReturn | unknown>;
+  fetchASingleVerse: (props: SingleVerseProps) => Promise<SingleVerseReturn | unknown>;
+  fetchChapterVersesByRange: (props: VerseByRangeProps) => Promise<VerseByRangeReturn | unknown>;
+  fetchChapterVersesByMultiRange: (props: VerseByMultiRangeProps) =>  Promise<VerseByRangeReturn | unknown>;
 }
-
