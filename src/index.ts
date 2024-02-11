@@ -13,6 +13,7 @@ import { SingleVerse } from "./types/verse";
 import randomVerseHandler from "./service/random-verse/index";
 import fetchASingleVerse from "./service/fetch-single-verse/index";
 import fetchVersesByRange from "./service/fetch-verses-by-range/index";
+import systemHelp from "./service/help/index";
 
 /* class */
 class HolyBible implements HolyBibleInt {
@@ -121,6 +122,17 @@ class HolyBible implements HolyBibleInt {
     } catch (error) {
       return error;
     }
+  }
+
+  /**
+   * fetches data about the api and allowed languages for translation
+   */
+  fetchSystemHelp(): Record<string, any> {
+    return {
+      code: "api-ok",
+      message: "API System Help",
+      payload: systemHelp()
+    };
   }
 }
 
