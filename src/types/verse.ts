@@ -1,3 +1,5 @@
+import { Translation } from "./translation";
+
 export interface Verse {
   book: {
     id: string;

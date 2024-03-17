@@ -14,7 +14,7 @@
     "test": "jest --verbose --coverage --watchAll=false"
   },
   "keywords": [],
-  "author": "",
+  "author": "Sricharan Krishnan (https://github.com/sricharankrishnan)",
   "license": "ISC",
   "devDependencies": {
     "@types/jest": "^29.5.12",
