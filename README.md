@@ -1,5 +1,7 @@
 ![The Holy Bible API](https://ik.imagekit.io/srichus/random-pics/bible-glow.gif?updatedAt=1708167707218)
 # The Holy Bible API
+![NPM Downloads](https://img.shields.io/npm/dt/the-holy-bible-api)
+![Maintenance](https://img.shields.io/maintenance/yes/2024)
 
 ### About
 A typescript/class based api wrapper for 'https://bible-api.com/'. The API provides simple yet useful methods that can help developers fetch verses from the Holy Bible based on book names, chapter, verse as well as provide a translated version.
